@@ -1,0 +1,11 @@
+<!-- T-BLOB-1: Blob URL script that sets a benign marker -->
+<!-- This template is used when blob: or data: is allowed in script-src -->
+<script>
+  const code = "try{window.__PG_MARKER='OK-BLOB';}catch(e){}";
+  const blob = new Blob([code], {type: 'text/javascript'});
+  const url = URL.createObjectURL(blob);
+  const s = document.createElement('script');
+  s.src = url;
+  document.currentScript.after(s);
+</script>
+

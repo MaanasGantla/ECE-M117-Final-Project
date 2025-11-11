@@ -1,0 +1,5 @@
+dry_run: true
+output_dir: "out"
+demo_host_fallback: "https://assets.demo.local"
+telemetry_url: ""     # leave empty; harness may inject one at runtime
+

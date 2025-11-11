@@ -1,0 +1,44 @@
+{
+    "meta": {
+        "scanned_url": "http://demo-app:3000/account"
+    },
+    "results": [
+        {
+            "id": "CSP-001",
+            "category": "script-src",
+            "type": "unsafe-inline",
+            "severity": "high",
+            "evidence": {
+                "directive": "script-src",
+                "raw": "script-src 'self' 'unsafe-inline'"
+            },
+            "preconditions": {}
+        },
+        {
+            "id": "CSP-010",
+            "category": "script-src",
+            "type": "blob_allowed",
+            "severity": "med",
+            "evidence": {
+                "directive": "script-src",
+                "raw": "blob:"
+            },
+            "preconditions": {}
+        },
+        {
+            "id": "CSP-020",
+            "category": "script-src",
+            "type": "trusted_host_wildcard",
+            "severity": "high",
+            "evidence": {
+                "directive": "script-src",
+                "raw": "https://*.demo.local"
+            },
+            "preconditions": {
+                "allowed_hosts": [
+                    "https://assets.demo.local"
+                ]
+            }
+        }
+    ]
+}

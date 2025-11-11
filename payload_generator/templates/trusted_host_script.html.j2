@@ -1,0 +1,12 @@
+<!-- T-TRUSTED-1: Load benign script from a DEMO-allowed host -->
+<!-- This template is used when script-src allows a wildcard or overbroad host -->
+<script src="{{ demo_host }}/ok.js" defer></script>
+<script>
+  // Optional: observe completion
+  (function waitMark(){
+    const done = () => document.body.setAttribute('data-pg-marker','OK-TRUSTED');
+    if (window.__PG_MARKER) return done();
+    setTimeout(waitMark, 50);
+  })();
+</script>
+

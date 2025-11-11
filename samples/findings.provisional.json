@@ -1,0 +1,24 @@
+{
+    "findings": [
+        {
+            "type": "unsafe_inline",
+            "severity": "high",
+            "details": {}
+        },
+        {
+            "type": "blob_allowed",
+            "severity": "med",
+            "details": {}
+        },
+        {
+            "type": "trusted_host_wildcard",
+            "severity": "high",
+            "details": {
+                "allowed_hosts": [
+                    "https://assets.demo.local",
+                    "https://*.thirdparty.com"
+                ]
+            }
+        }
+    ]
+}

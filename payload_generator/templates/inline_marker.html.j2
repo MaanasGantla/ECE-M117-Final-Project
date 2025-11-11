@@ -1,0 +1,10 @@
+<!-- T-INLINE-1: Inline marker (benign) -->
+<!-- This template is used when unsafe-inline is allowed in CSP -->
+<button id="pg-inline-btn" onclick="window.__PG_MARKER='OK';this.textContent='Marked';">
+  Click to mark
+</button>
+<script>
+  // If inline scripts run without a click, set it immediately (still benign).
+  (function(){ try { window.__PG_MARKER = 'OK-AUTO'; } catch(e){} })();
+</script>
+
