@@ -22,7 +22,7 @@ This document explains how to use the generated artifacts with a headless browse
    - `'OK-BLOB'` for T-BLOB-1
 
 ### For T-TRUSTED-1:
-1. **Prerequisite:** Ensure the DEMO host (e.g., `https://assets.demo.local/ok.js`) serves:
+1. **Prerequisite:** Ensure the DEMO host (e.g., `http://assets.demo.local/ok.js`) serves:
    ```javascript
    window.__PG_MARKER = 'OK-TRUSTED';
    ```
@@ -60,4 +60,3 @@ assert(marker === 'OK' || marker === 'OK-AUTO');
 - All templates are **benign** - they only set markers, never exfiltrate.
 - The `plan.json` file contains structured data you can parse programmatically.
 - If telemetry is configured, you can POST marker events to the telemetry URL.
-

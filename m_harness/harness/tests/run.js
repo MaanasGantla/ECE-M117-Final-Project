@@ -14,9 +14,22 @@ async function injectSnippet(page, htmlPath) {
   const html = fs.readFileSync(htmlPath, "utf-8");
   await page.evaluate((snippet) => {
     const container = document.getElementById("injection-root") || document.body;
-    const div = document.createElement("div");
-    div.innerHTML = snippet;
-    container.appendChild(div);
+    const template = document.createElement("template");
+    template.innerHTML = snippet;
+
+    const nodes = Array.from(template.content.childNodes);
+    nodes.forEach((node) => {
+      if (node.nodeName === "SCRIPT") {
+        const script = document.createElement("script");
+        Array.from(node.attributes || []).forEach((attr) => {
+          script.setAttribute(attr.name, attr.value);
+        });
+        script.textContent = node.textContent || "";
+        container.appendChild(script);
+      } else {
+        container.appendChild(node);
+      }
+    });
   }, html);
 }
 

@@ -10,7 +10,7 @@ The generator accepts both a provisional schema and a canonical schema format.
     { "type": "blob_allowed", "severity": "med", "details": {} },
     { "type": "trusted_host_wildcard",
       "severity": "high",
-      "details": { "allowed_hosts": ["https://*.demo.local"] }
+      "details": { "allowed_hosts": ["http://assets.demo.local"] }
     }
   ]
 }
@@ -47,4 +47,3 @@ When implementing an analyzer that outputs findings for this generator, please e
 1. The `type` field uses one of the keys listed in `FINDING_TO_TEMPLATE` (see `payload_generator/mappings.py`)
 2. Preconditions (if any) go in the `preconditions` field (canonical) or `details` field (provisional)
 3. See `samples/findings.canonical.json` for the exact expected format
-

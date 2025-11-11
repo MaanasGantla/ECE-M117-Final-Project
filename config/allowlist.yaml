@@ -1,6 +1,5 @@
 # Only hosts in this list may be used by templates that load external scripts.
 # Use exact origins; wildcards are not allowed here.
 allowed_hosts:
-  - "https://assets.demo.local"
-  - "https://static.demo.local"
-
+  - "http://assets.demo.local"
+  - "http://static.demo.local"
