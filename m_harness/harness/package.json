@@ -1,0 +1,14 @@
+{
+    "name": "pg-harness",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+      "prepare": "npx playwright install --with-deps",
+      "test": "node tests/run.js"
+    },
+    "dependencies": {
+      "@playwright/test": "^1.47.2"
+    }
+  }
+  

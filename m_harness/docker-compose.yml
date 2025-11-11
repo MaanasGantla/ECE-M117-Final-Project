@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  demo:
+    build: ./demo_app
+    environment:
+      - CSP_PROFILE=${CSP_PROFILE:-baseline}
+      - LAB_HOST=http://assets.demo.local
+    ports:
+      - "3000:3000"
+    networks:
+      labnet:
+        aliases:
+          - demo.local
+    depends_on:
+      - assets
+
+  assets:
+    build: ./assets_host
+    ports:
+      - "8080:80"
+    networks:
+      labnet:
+        aliases:
+          - assets.demo.local
+
+networks:
+  labnet:
+    driver: bridge

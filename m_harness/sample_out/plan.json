@@ -1,0 +1,18 @@
+{
+    "run_id": "local-sample",
+    "items": [
+      {
+        "finding_type": "unsafe_inline",
+        "template_id": "T-INLINE-1",
+        "artifact": "out/snippets/T-INLINE-1_unsafe_inline.html",
+        "assertion": "Check window.__PG_MARKER"
+      },
+      {
+        "finding_type": "trusted_host_wildcard",
+        "template_id": "T-TRUSTED-1",
+        "artifact": "out/snippets/T-TRUSTED-1_trusted_host.html",
+        "assertion": "Check window.__PG_MARKER=='OK-TRUSTED' or data-pg-marker"
+      }
+    ]
+  }
+  
