@@ -29,6 +29,20 @@ A benign exploit generator that produces safe HTML snippets to test CSP weakness
    - `./out/catalog.csv` - Index of templates
    - `./out/plan.json` - Machine-readable plan for harness
 
+### CSP Analyzer
+
+You can also analyze a live URL to generate findings:
+
+```bash
+python -m csp_analyzer.cli --url https://example.com --out findings.json
+```
+
+Then feed the findings into the generator:
+
+```bash
+python -m payload_generator.cli --findings findings.json --this-is-a-demo
+```
+
 ### Safety Features
 
 - Generator emits only benign markers (no exfiltration)
