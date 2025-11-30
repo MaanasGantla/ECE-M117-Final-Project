@@ -4,8 +4,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    # Default vulnerable CSP for demo purposes
-    csp = "script-src 'self' 'unsafe-inline' blob: data: https://*.demo.local http://127.0.0.1:5000"
+    # Allow CSP to be overridden via query param for the sandbox
+    csp = request.args.get('csp')
+    if not csp:
+        # Default vulnerable CSP for demo purposes
+        csp = "script-src 'self' 'unsafe-inline' blob: data: https://*.demo.local http://127.0.0.1:5000"
     
     html = """
     <!DOCTYPE html>

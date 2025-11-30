@@ -83,6 +83,15 @@ def run_analysis(url):
     """Runs the full analysis pipeline."""
     csp = fetch_csp(url)
     if not csp:
-        return {"findings": []}
+        # Missing CSP is a high severity finding
+        return {
+            "findings": [{
+                "type": "missing_csp",
+                "severity": "high",
+                "details": {
+                    "message": "No Content-Security-Policy header found. This allows all content sources."
+                }
+            }]
+        }
     
     return analyze_csp(csp, url)

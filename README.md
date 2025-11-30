@@ -59,6 +59,15 @@ playwright install
 ./scripts/test_all.sh
 ```
 
+### Web GUI
+
+For a visual experience, run the web dashboard:
+
+```bash
+python -m gui.app
+```
+Then open [http://localhost:8080](http://localhost:8080) in your browser.
+
 ### Safety Features
 
 - Generator emits only benign markers (no exfiltration)
