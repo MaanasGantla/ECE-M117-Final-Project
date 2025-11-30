@@ -3,4 +3,5 @@
 allowed_hosts:
   - "https://assets.demo.local"
   - "https://static.demo.local"
+  - "http://127.0.0.1:5000"
 

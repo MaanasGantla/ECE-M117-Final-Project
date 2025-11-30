@@ -12,7 +12,7 @@ echo "Changed directory to project root: $PROJECT_ROOT"
 
 # 0. Install Dependencies
 echo "Installing dependencies..."
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 
 # 1. Run Unit Tests
 echo "Running Unit Tests..."
@@ -39,3 +39,23 @@ echo "------------------------------------------------"
 echo "✅ Test Complete!"
 echo "Analyzer output: out/google_findings.json"
 echo "Generator output: out/test_run/"
+
+# 4. Run Harness
+echo "------------------------------------------------"
+echo "Running Harness..."
+# Start server in background
+python3 harness/mock_server.py > /dev/null 2>&1 &
+SERVER_PID=$!
+echo "Mock server started (PID: $SERVER_PID)"
+
+# Give it a second to start
+sleep 5
+
+# Run runner
+python3 harness/runner.py
+
+# Kill server
+kill $SERVER_PID
+echo "Mock server stopped."
+echo "------------------------------------------------"
+echo "✅ All Tests Complete!"
