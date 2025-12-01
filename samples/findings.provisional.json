@@ -15,7 +15,7 @@
             "severity": "high",
             "details": {
                 "allowed_hosts": [
-                    "https://assets.demo.local",
+                    "http://127.0.0.1:5000",
                     "https://*.thirdparty.com"
                 ]
             }
