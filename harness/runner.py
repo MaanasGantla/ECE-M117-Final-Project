@@ -2,7 +2,7 @@ import os
 import glob
 from playwright.sync_api import sync_playwright
 
-def verify_payload(payload, server_url="http://127.0.0.1:5000", csp=None):
+def verify_payload(payload, server_url="http://127.0.0.1:5001", csp=None):
     """
     Verifies a single payload against the mock server.
     
@@ -65,7 +65,7 @@ def verify_payload(payload, server_url="http://127.0.0.1:5000", csp=None):
         
     return result
 
-def run_payloads(server_url="http://127.0.0.1:5000"):
+def run_payloads(server_url="http://127.0.0.1:5001"):
     snippet_dir = os.path.join("out", "test_run", "snippets")
     snippets = glob.glob(os.path.join(snippet_dir, "*.html"))
     

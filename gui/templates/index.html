@@ -4,287 +4,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSP Analyzer Pro</title>
+    <title>CSP Analyzer</title>
     <style>
-        :root {
-            --bg: #000000;
-            --surface: #1d1d1f;
-            --surface-glass: rgba(29, 29, 31, 0.7);
-            --text: #f5f5f7;
-            --text-secondary: #86868b;
-            --accent: #2997ff;
-            --accent-hover: #0071e3;
-            --danger: #ff453a;
-            --warning: #ff9f0a;
-            --success: #30d158;
-            --border: #424245;
-        }
-
-        * {
-            box-sizing: border_box;
-            margin: 0;
-            padding: 0;
-            -webkit-font-smoothing: antialiased;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.4;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 80px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 980px;
-            padding: 0 20px;
-            animation: fadeIn 0.8s ease-out;
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
         }
 
         h1 {
-            font-size: 56px;
-            font-weight: 700;
-            letter-spacing: -0.005em;
-            margin-bottom: 12px;
-            text-align: center;
-            background: linear-gradient(180deg, #fff, #a1a1a6);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
         }
 
-        .subtitle {
-            font-size: 24px;
-            color: var(--text-secondary);
-            text-align: center;
-            font-weight: 400;
-            margin-bottom: 60px;
-        }
-
-        .search-container {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto 80px;
-        }
-
-        .input-wrapper {
-            position: relative;
-            background: var(--surface);
-            border-radius: 18px;
-            padding: 4px;
+        .input-group {
+            margin-bottom: 20px;
             display: flex;
-            align-items: center;
-            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.3s ease;
-            border: 1px solid var(--border);
-        }
-
-        .input-wrapper:focus-within {
-            transform: scale(1.02);
-            border-color: var(--text-secondary);
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+            gap: 10px;
         }
 
         input[type="text"] {
             flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text);
-            font-size: 17px;
-            padding: 16px 20px;
-            outline: none;
-            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
-        input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        button.primary-btn {
-            background: var(--accent);
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 600;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            margin-right: 4px;
         }
 
-        button.primary-btn:hover {
-            background: var(--accent-hover);
+        button:hover {
+            background-color: #0056b3;
         }
 
-        button.primary-btn:disabled {
-            opacity: 0.5;
-            cursor: default;
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
 
-        .results-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        .section {
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 4px;
         }
 
-        .results-section.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .finding {
+            background-color: #f9f9f9;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 15px;
         }
 
-        .card {
-            background: var(--surface);
-            border-radius: 24px;
-            padding: 40px;
-            margin-bottom: 30px;
-            border: 1px solid var(--border);
+        .finding.high {
+            border-left-color: #dc3545;
         }
 
-        .card h3 {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 24px;
-        }
-
-        .finding-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: background 0.2s ease;
-        }
-
-        .finding-item:hover {
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 10px;
-            border-radius: 99px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 12px;
-        }
-
-        .badge-high {
-            background: rgba(255, 69, 58, 0.15);
-            color: var(--danger);
-        }
-
-        .badge-med {
-            background: rgba(255, 159, 10, 0.15);
-            color: var(--warning);
-        }
-
-        .finding-title {
-            font-size: 19px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .payload {
+            background-color: #f0f0f0;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
         }
 
         pre {
-            background: #000;
-            padding: 20px;
-            border-radius: 12px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
             overflow-x: auto;
-            font-family: "SF Mono", "Menlo", "Monaco", "Courier New", monospace;
-            font-size: 13px;
-            color: #a1a1a6;
-            margin-top: 16px;
-            border: 1px solid #333;
-        }
-
-        .payload-item {
-            margin-bottom: 40px;
-        }
-
-        .payload-item h4 {
-            font-size: 17px;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top-color: var(--accent);
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            border-radius: 4px;
         }
 
         .hidden {
             display: none;
         }
 
-        /* Glassmorphism for sticky header if we wanted one, but keeping it simple */
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .badge.high {
+            background-color: #dc3545;
+        }
+
+        .badge.med {
+            background-color: #ffc107;
+            color: #333;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>CSP Analyzer.</h1>
-        <p class="subtitle">Advanced vulnerability detection & payload generation.</p>
+    <h1>CSP Analyzer</h1>
 
-        <div class="search-container">
-            <div class="input-wrapper">
-                <input type="text" id="urlInput" placeholder="Enter target URL (e.g. https://google.com)"
-                    value="https://google.com" autocomplete="off">
-                <button id="scanBtn" class="primary-btn" onclick="runScan()">Analyze</button>
-            </div>
-            <div id="loading" class="loading-spinner hidden">
-                <div class="spinner"></div>
-            </div>
+    <div class="input-group">
+        <input type="text" id="urlInput" placeholder="Enter URL (e.g. https://google.com)" value="https://google.com">
+        <button id="scanBtn" onclick="runScan()">Analyze</button>
+    </div>
+
+    <div id="loading" class="hidden">Analyzing...</div>
+
+    <div id="results" class="hidden">
+        <div class="section">
+            <h2>Findings</h2>
+            <div id="findingsList"></div>
         </div>
 
-        <div id="results" class="results-section">
-            <div class="card">
-                <h3>Findings</h3>
-                <div id="findingsList"></div>
-            </div>
-
-            <div class="card">
-                <h3>Generated Payloads</h3>
-                <div id="payloadsList"></div>
-            </div>
+        <div class="section">
+            <h2>Payloads</h2>
+            <div id="payloadsList"></div>
         </div>
     </div>
 
@@ -297,10 +141,7 @@
 
             btn.disabled = true;
             loading.classList.remove('hidden');
-            results.classList.remove('visible');
-
-            // Small delay for smooth animation out
-            await new Promise(r => setTimeout(r, 300));
+            results.classList.add('hidden');
 
             document.getElementById('findingsList').innerHTML = '';
             document.getElementById('payloadsList').innerHTML = '';
@@ -316,63 +157,56 @@
 
                 if (analysis.error) throw new Error(analysis.error);
 
-                // Display Findings
+                // Render Findings
                 const findingsDiv = document.getElementById('findingsList');
                 if (analysis.findings.length === 0) {
-                    findingsDiv.innerHTML = '<div class="finding-item" style="text-align:center; color:var(--text-secondary);">No vulnerabilities found. Secure target.</div>';
+                    findingsDiv.innerHTML = '<p>No vulnerabilities found.</p>';
                 } else {
                     analysis.findings.forEach(f => {
                         const el = document.createElement('div');
-                        el.className = 'finding-item';
+                        el.className = `finding ${f.severity}`;
                         el.innerHTML = `
-                            <span class="badge badge-${f.severity === 'high' ? 'high' : 'med'}">${f.severity} Severity</span>
-                            <div class="finding-title">${f.type}</div>
-                            <div style="color: var(--text-secondary); font-size: 15px;">
-                                ${f.details.message || 'Potential CSP bypass detected.'}
-                            </div>
+                            <h3><span class="badge ${f.severity}">${f.severity.toUpperCase()}</span> ${f.type}</h3>
+                            <p>${f.details.message || 'Potential CSP bypass.'}</p>
                             <pre>${JSON.stringify(f.details, null, 2)}</pre>
                         `;
                         findingsDiv.appendChild(el);
                     });
                 }
 
-                // 2. Generate (only if findings exist)
-                let generation = null;
+                // 2. Generate Payloads
                 if (analysis.findings.length > 0) {
                     const genRes = await fetch('/api/generate', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ findings: analysis.findings })
                     });
-                    generation = await genRes.json();
+                    const generation = await genRes.json();
 
                     if (generation.error) throw new Error(generation.error);
 
                     const payloadsDiv = document.getElementById('payloadsList');
+                    window.lastSnippets = generation.snippets;
+                    window.lastAnalysis = analysis;
+
                     generation.snippets.forEach((s, index) => {
                         const el = document.createElement('div');
-                        el.className = 'payload-item';
+                        el.className = 'payload';
                         el.innerHTML = `
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <h4>${s.name}</h4>
-                                <button class="primary-btn" style="padding:6px 12px; font-size:13px;" onclick="verifyPayload('${index}', this)">
-                                    Verify Exploit
-                                </button>
+                                <button onclick="verifyPayload('${index}', this)">Verify</button>
                             </div>
-                            <div id="verify-result-${index}" style="margin-bottom:10px;"></div>
-                            <pre id="payload-content-${index}">${s.content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                            <div id="verify-result-${index}"></div>
+                            <pre>${s.content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
                         `;
                         payloadsDiv.appendChild(el);
                     });
                 } else {
-                    document.getElementById('payloadsList').innerHTML = '<div style="text-align:center; color:var(--text-secondary);">No payloads generated.</div>';
+                    document.getElementById('payloadsList').innerHTML = '<p>No payloads generated.</p>';
                 }
 
-                results.classList.add('visible');
-
-                // Store analysis for verification
-                window.lastAnalysis = analysis;
-                window.lastSnippets = generation ? generation.snippets : [];
+                results.classList.remove('hidden');
 
             } catch (e) {
                 alert('Error: ' + e.message);
@@ -391,11 +225,6 @@
             resultDiv.innerHTML = '';
 
             try {
-                // Get the raw CSP from the first finding (assuming all findings share the same CSP source)
-                // In a real app, we'd store the raw CSP separately.
-                // For now, we'll extract it from the finding details if available, or just pass null (which uses default vulnerable CSP)
-                // But wait, we want to test the TARGET'S CSP.
-                // The analyzer returns "raw" in details for unsafe-inline.
                 let csp = null;
                 if (window.lastAnalysis && window.lastAnalysis.findings.length > 0) {
                     const f = window.lastAnalysis.findings[0];
@@ -415,16 +244,16 @@
                 const result = await res.json();
 
                 if (result.success) {
-                    resultDiv.innerHTML = `<span class="badge" style="background:rgba(48, 209, 88, 0.2); color:#30d158;">✅ Verified Bypass</span> <span style="font-size:13px; color:var(--text-secondary);">Marker: ${result.marker}</span>`;
+                    resultDiv.innerHTML = '<p style="color:green; font-weight:bold;">✅ Verified Bypass</p>';
                 } else {
-                    resultDiv.innerHTML = `<span class="badge" style="background:rgba(255, 69, 58, 0.2); color:#ff453a;">❌ Blocked by CSP</span> <span style="font-size:13px; color:var(--text-secondary);">${result.error || 'Unknown error'}</span>`;
+                    resultDiv.innerHTML = `<p style="color:red;">❌ Blocked: ${result.error || 'Unknown error'}</p>`;
                 }
 
             } catch (e) {
-                resultDiv.innerHTML = `<span style="color:var(--danger);">Error: ${e.message}</span>`;
+                resultDiv.innerHTML = `<p style="color:red;">Error: ${e.message}</p>`;
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Verify Exploit';
+                btn.textContent = 'Verify';
             }
         }
     </script>
