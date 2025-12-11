@@ -1,12 +1,4 @@
-"""
-Schema normalization module.
-
-This module handles two different JSON schemas from analyzers:
-1. Provisional schema (simpler format)
-2. Canonical schema (standardized format)
-
-Both get normalized into a common internal format.
-"""
+"""Schema normalization module."""
 from typing import Any, Dict, List
 
 
@@ -15,16 +7,7 @@ CANONICAL_KEYS = ("results",)
 
 
 def normalize_findings(data: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """
-    Normalize findings from either provisional or canonical schema.
-    
-    Returns a list of normalized finding records:
-    {
-        "type": "unsafe_inline",
-        "severity": "high",
-        "pre": {...preconditions...}
-    }
-    """
+    """Normalize findings from either provisional or canonical schema."""
     if any(k in data for k in PROVISIONAL_KEYS):
         return _from_provisional(data)
     if any(k in data for k in CANONICAL_KEYS):

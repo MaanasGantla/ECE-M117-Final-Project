@@ -1,0 +1,12 @@
+{
+    "csp": null,
+    "findings": [
+        {
+            "type": "missing_csp",
+            "severity": "high",
+            "details": {
+                "message": "No Content-Security-Policy header found. This allows all content sources."
+            }
+        }
+    ]
+}

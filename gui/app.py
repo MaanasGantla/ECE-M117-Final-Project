@@ -1,6 +1,11 @@
 import os
+import sys
 import json
 import tempfile
+
+# Add project root to path so imports work
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from flask import Flask, render_template, request, jsonify
 from csp_analyzer.analyzer import run_analysis
 from payload_generator.generator import PayloadGenerator, GeneratorConfig
@@ -88,19 +93,34 @@ def verify():
         
     try:
         # Ensure mock server is running
-        # For this demo, we assume the mock server is running on port 5000
-        # or we could start it here. To keep it simple, we'll try to connect,
-        # and if it fails, we'll try to start it.
         import requests
         try:
-            requests.get("http://127.0.0.1:5000", timeout=1)
+            requests.get("http://127.0.0.1:5001", timeout=1)
         except requests.ConnectionError:
             # Start mock server in background
             import subprocess
             import sys
-            subprocess.Popen([sys.executable, "harness/mock_server.py"])
+            
+            # Use Popen to start the server detached
+            server_path = os.path.join(os.path.dirname(__file__), '..', 'harness', 'mock_server.py')
+            
+            # Create a clean environment to avoid inheriting Werkzeug's reloader state
+            env = os.environ.copy()
+            env.pop('WERKZEUG_SERVER_FD', None)
+            env.pop('WERKZEUG_RUN_MAIN', None)
+            
+            subprocess.Popen([sys.executable, server_path], env=env)
+            
+            # Wait for it to come up
             import time
-            time.sleep(2) # Wait for startup
+            for _ in range(10):
+                try:
+                    requests.get("http://127.0.0.1:5001", timeout=1)
+                    break
+                except requests.ConnectionError:
+                    time.sleep(0.5)
+            else:
+                return jsonify({"error": "Failed to start mock server"}), 500
             
         from harness.runner import verify_payload
         result = verify_payload(payload, csp=csp)

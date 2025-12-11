@@ -3,14 +3,13 @@ import json
 from urllib.parse import urlparse
 
 def fetch_csp(url):
-    """Fetches the CSP header from the given URL."""
+    """Fetches the CSP headers from the given URL."""
     try:
         response = requests.get(url, timeout=10)
-        csp_header = response.headers.get('Content-Security-Policy')
-        if not csp_header:
-            print(f"No CSP header found for {url}")
-            return None
-        return csp_header
+        return {
+            "enforced": response.headers.get('Content-Security-Policy'),
+            "report_only": response.headers.get('Content-Security-Policy-Report-Only')
+        }
     except requests.RequestException as e:
         print(f"Error fetching URL {url}: {e}")
         return None
@@ -36,6 +35,9 @@ def parse_csp(csp_string):
 
 def analyze_csp(csp_string, url):
     """Analyzes the CSP string for vulnerabilities."""
+    if not csp_string:
+        return {"findings": []}
+        
     directives = parse_csp(csp_string)
     findings = []
     
@@ -81,17 +83,47 @@ def analyze_csp(csp_string, url):
 
 def run_analysis(url):
     """Runs the full analysis pipeline."""
-    csp = fetch_csp(url)
-    if not csp:
-        # Missing CSP is a high severity finding
-        return {
-            "findings": [{
+    csp_headers = fetch_csp(url)
+    if not csp_headers:
+        return {"findings": [{"type": "error", "severity": "high", "details": {"message": "Failed to fetch URL"}}]}
+        
+    enforced = csp_headers.get("enforced")
+    report_only = csp_headers.get("report_only")
+    
+    findings = []
+    
+    # Check for missing enforced CSP
+    if not enforced:
+        if report_only:
+            findings.append({
+                "type": "csp_report_only",
+                "severity": "med",
+                "details": {
+                    "message": "Enforced CSP is missing, but Report-Only header was found.",
+                    "raw": report_only
+                }
+            })
+            # Analyze the report-only policy too, just to show what it would catch
+            ro_analysis = analyze_csp(report_only, url)
+            for f in ro_analysis["findings"]:
+                f["type"] += " (Report-Only)"
+                f["severity"] = "info" # Downgrade severity for report-only
+                findings.append(f)
+        else:
+            findings.append({
                 "type": "missing_csp",
                 "severity": "high",
                 "details": {
                     "message": "No Content-Security-Policy header found. This allows all content sources."
                 }
-            }]
-        }
+            })
+            
+    # Analyze enforced CSP if present
+    if enforced:
+        analysis_result = analyze_csp(enforced, url)
+        findings.extend(analysis_result["findings"])
     
-    return analyze_csp(csp, url)
+    return {
+        "csp": enforced or report_only, # Return whichever exists for visualization
+        "findings": findings
+    }

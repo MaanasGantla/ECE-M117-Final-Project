@@ -1,12 +1,4 @@
-"""
-Main payload generator engine.
-
-This is the "production line" that:
-1. Takes normalized findings
-2. Maps them to templates
-3. Renders Jinja2 templates
-4. Writes output files (snippets, catalog, plan)
-"""
+"""Main payload generator engine."""
 import json
 import csv
 import os
@@ -49,16 +41,7 @@ class PayloadGenerator:
         )
     
     def generate(self, findings_json: Dict[str, Any], run_id: str = "local") -> Dict[str, Any]:
-        """
-        Generate benign templates from findings.
-        
-        Args:
-            findings_json: Raw JSON from analyzer (provisional or canonical)
-            run_id: Identifier for this run (for harness correlation)
-        
-        Returns:
-            Dict with paths to generated artifacts
-        """
+        """Generate benign templates from findings."""
         # Normalize findings (handles both schemas)
         normalized = normalize_findings(findings_json)
         

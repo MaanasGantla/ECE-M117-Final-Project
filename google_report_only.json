@@ -1,0 +1,21 @@
+{
+    "csp": "object-src 'none';base-uri 'self';script-src 'nonce-w4vtPPvmEr8j4fHzo7GRjA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp",
+    "findings": [
+        {
+            "type": "csp_report_only",
+            "severity": "med",
+            "details": {
+                "message": "Enforced CSP is missing, but Report-Only header was found.",
+                "raw": "object-src 'none';base-uri 'self';script-src 'nonce-w4vtPPvmEr8j4fHzo7GRjA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"
+            }
+        },
+        {
+            "type": "unsafe_inline (Report-Only)",
+            "severity": "info",
+            "details": {
+                "directive": "script-src",
+                "raw": "object-src 'none';base-uri 'self';script-src 'nonce-w4vtPPvmEr8j4fHzo7GRjA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"
+            }
+        }
+    ]
+}

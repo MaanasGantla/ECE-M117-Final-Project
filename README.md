@@ -1,3 +1,17 @@
+# The Trust Gap in Web Security
+
+Modern web apps rely on "trust" (Content Security Policy), but this trust is brittle. One typo invalidates the entire defense.
+
+Common misconfigurations like `unsafe-inline`, `blob:`, and wildcard hosts (`*.demo.local`) leave gaping holes.
+
+Developers assume they are safe because they have a policy, but they lack a safe way to prove it works in production.
+
+**Move from static warnings to dynamic proof.** We enable developers by safely using benign, auto-generated exploits.
+
+Current tools are too noisy or dangerous for CI/CD. We provide deterministic, safety-guaranteed verification.
+
+---
+
 # CSP Payload Generator
 
 ## Payload Generator (Benign, DEMO-Only)

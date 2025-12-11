@@ -1,8 +1,4 @@
-"""
-Command-line interface for the payload generator.
-
-This is the "front door" - how users and CI run the generator.
-"""
+"""Command-line interface for the payload generator."""
 import argparse
 import json
 import yaml
