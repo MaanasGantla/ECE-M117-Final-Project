@@ -1,28 +1,65 @@
 import unittest
-from unittest.mock import patch, MagicMock
-from csp_analyzer.analyzer import run_analysis
+import os
+import shutil
+from payload_generator.generator import PayloadGenerator, GeneratorConfig
 
-class TestAnalyzerFix(unittest.TestCase):
-    @patch('csp_analyzer.analyzer.requests.get')
-    def test_run_analysis_with_unsafe_inline(self, mock_get):
-        # Mock response with a CSP header containing 'unsafe-inline'
-        mock_response = MagicMock()
-        mock_response.headers = {'Content-Security-Policy': "script-src 'unsafe-inline' 'self'; object-src 'none';"}
-        mock_get.return_value = mock_response
+class TestPayloadGeneratorFix(unittest.TestCase):
+    def setUp(self):
+        self.out_dir = "test_out"
+        if os.path.exists(self.out_dir):
+            shutil.rmtree(self.out_dir)
+            
+        self.cfg = GeneratorConfig(
+            out_dir=self.out_dir,
+            dry_run=False,
+            telemetry_url="http://localhost:3000",
+            allowlist=["example.com"],
+            demo_host_fallback="example.com"
+        )
+        self.generator = PayloadGenerator(self.cfg)
 
-        # Run analysis
-        result = run_analysis("http://example.com")
+    def tearDown(self):
+        if os.path.exists(self.out_dir):
+            shutil.rmtree(self.out_dir)
 
-        # Verify findings
-        self.assertIn("findings", result)
-        findings = result["findings"]
-        self.assertTrue(len(findings) > 0)
+    def test_report_only_payload_generation(self):
+        # Simulate findings from csp_analyzer for a Report-Only case
+        findings = {
+            "findings": [
+                {
+                    "type": "csp_report_only",
+                    "severity": "med",
+                    "details": {
+                        "message": "Enforced CSP is missing, but Report-Only header was found.",
+                        "raw": "script-src 'unsafe-inline'"
+                    }
+                },
+                {
+                    "type": "unsafe_inline (Report-Only)",
+                    "severity": "info",
+                    "details": {
+                        "directive": "script-src",
+                        "raw": "script-src 'unsafe-inline'"
+                    }
+                }
+            ]
+        }
+
+        # Run generator
+        result = self.generator.generate(findings, run_id="test_run")
         
-        # Check for specific finding
-        unsafe_inline_found = any(f["type"] == "unsafe_inline" for f in findings)
-        self.assertTrue(unsafe_inline_found, "Should detect 'unsafe-inline'")
+        # Verify artifacts were generated
+        self.assertTrue(len(result["artifacts"]) > 0, "Should generate artifacts")
         
-        print("Verification successful: 'unsafe-inline' detected.")
+        # Check if specific templates were used
+        snippets_dir = os.path.join(self.out_dir, "snippets")
+        files = os.listdir(snippets_dir)
+        print(f"Generated files: {files}")
+        
+
+        
+        self.assertIn("T-INLINE-1_csp_report_only.html", files)
+        self.assertIn("T-INLINE-1_unsafe_inline (Report-Only).html", files)
 
 if __name__ == '__main__':
     unittest.main()

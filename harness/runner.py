@@ -3,17 +3,7 @@ import glob
 from playwright.sync_api import sync_playwright
 
 def verify_payload(payload, server_url="http://127.0.0.1:5001", csp=None):
-    """
-    Verifies a single payload against the mock server.
-    
-    Args:
-        payload (str): The HTML payload to inject.
-        server_url (str): The URL of the mock server.
-        csp (str): Optional CSP string to enforce (via query param).
-        
-    Returns:
-        dict: {"success": bool, "marker": str, "error": str}
-    """
+    """Verifies a single payload against the mock server."""
     target_url = server_url
     if csp:
         import urllib.parse
