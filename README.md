@@ -29,6 +29,45 @@ A benign exploit generator that produces safe HTML snippets to test CSP weakness
    - `./out/catalog.csv` - Index of templates
    - `./out/plan.json` - Machine-readable plan for harness
 
+### CSP Analyzer
+
+You can also analyze a live URL to generate findings:
+
+```bash
+python -m csp_analyzer.cli --url https://example.com --out findings.json
+```
+
+Then feed the findings into the generator:
+
+```bash
+python -m payload_generator.cli --findings findings.json --this-is-a-demo
+```
+```bash
+python -m payload_generator.cli --findings findings.json --this-is-a-demo
+```
+
+### Harness (Verification)
+
+To verify that the generated payloads actually work, you can run the harness. This spins up a mock vulnerable server and uses a headless browser to inject the payloads.
+
+```bash
+# Install additional dependencies
+python -m pip install flask playwright
+playwright install
+
+# Run the full test suite (Analyzer -> Generator -> Harness)
+./scripts/test_all.sh
+```
+
+### Web GUI
+
+For a visual experience, run the web dashboard:
+
+```bash
+python -m gui.app
+```
+Then open [http://localhost:8080](http://localhost:8080) in your browser.
+
 ### Safety Features
 
 - Generator emits only benign markers (no exfiltration)

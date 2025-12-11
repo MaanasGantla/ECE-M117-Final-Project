@@ -13,6 +13,7 @@ FINDING_TO_TEMPLATE = {
     # Inline script weaknesses
     "unsafe-inline": "T-INLINE-1",
     "unsafe_inline": "T-INLINE-1",
+    "missing_csp": "T-INLINE-1",
     
     # Blob/data URL weaknesses
     "blob_allowed": "T-BLOB-1",

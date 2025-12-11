@@ -1,0 +1,5 @@
+88bf98e1e74ec924cece52ab646bf9e52a51c2ee5edc62a9969119d62581b89c  out/catalog.csv
+0b83aa9d5ec4fff63995f471e5ce9d6459fbb495c8602c8d4058d60d035357cf  out/plan.json
+f0fa3d737d529d1a3b3bf3407b4725a322c2cf210aecd93842f858d68a813f93  out/snippets/T-BLOB-1_blob_allowed.html
+58ff5831dd81c93e5ded1508ce3dba8633e4eff7516fc58816c6d3e54e68bbe9  out/snippets/T-INLINE-1_unsafe-inline.html
+76d0cfc484d1d68226ffe15143ab1eae9682190ce7a07e493c4c4f1e2a7c9079  out/snippets/T-TRUSTED-1_trusted_host_wildcard.html
